@@ -1,36 +1,32 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        int n = s.size();
-        int m = t.size();
-        int left = 0;
-        int right = 0;
+        if(t.size() > s.size() || t.empty()) return "";
+        int left = 0, right = 0;
         int minlength = INT_MAX;
-        int count  = 0;
         int sIndex = -1;
-        int hash[256] = {0};
-        if(m > n || t.empty()) return "";
-        for(int i = 0; i<m; i++){
+        int hash[256 ] = {0};
+        int count = 0;
+        for(int i =0; i<t.size(); i++){
             hash[(unsigned char)t[i]]++;
+
         }
-        while (right < n){
+        while(right < s.size()){
             if(hash[(unsigned char)s[right]] > 0) count++;
             hash[(unsigned char)s[right]]--;
-
-            while(count == m){
+            while(t.size()  ==  count){
                 if(right - left + 1 < minlength){
                     minlength = right - left + 1;
                     sIndex = left;
                 }
-                hash[(unsigned char)s[left]]++;
+                hash[(unsigned char )s[left]]++;
                 if(hash[(unsigned char)s[left]] > 0){
                     count--;
                 }
-                left = left + 1;
+                left++;
             }
             right = right + 1;
         }
         return sIndex == -1 ? "" : s.substr(sIndex, minlength);
-
     }
 };
